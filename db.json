@@ -1,0 +1,160 @@
+{
+  "workflows": [
+    {
+      "id": "1",
+      "title": "Lead Qualification",
+      "target_companies_category": "Technology",
+      "is_scheduled": true,
+      "schedule_frequency": 86400,
+      "is_sandbox": "false",
+      "data": {
+        "stages": [
+          {
+            "id": 101,
+            "name": "Initial Contact",
+            "queries": [
+              "Has the lead responded?",
+              "Is the contact info valid?"
+            ],
+            "threshold": 0.8
+          },
+          {
+            "id": 102,
+            "name": "Follow-Up",
+            "queries": [
+              "Has a meeting been scheduled?",
+              "Has the proposal been shared?"
+            ],
+            "threshold": 0.6
+          }
+        ]
+      }
+    },
+    {
+      "id": "2",
+      "title": "Deal Negotiation",
+      "target_companies_category": "SaaS Startups",
+      "is_scheduled": true,
+      "schedule_frequency": 604800,
+      "is_sandbox": "false",
+      "data": {
+        "stages": [
+          {
+            "id": 201,
+            "name": "Pricing Discussion",
+            "queries": [
+              "Has pricing been discussed?",
+              "Any requests for customization?"
+            ],
+            "threshold": 0.7
+          },
+          {
+            "id": 202,
+            "name": "Contract Review",
+            "queries": [
+              "Has the contract been sent?",
+              "Have they requested changes?"
+            ],
+            "threshold": 0.6
+          },
+          {
+            "id": 203,
+            "name": "Final Approval",
+            "queries": [
+              "Has legal approved?",
+              "Are all stakeholders in agreement?"
+            ],
+            "threshold": 0.9
+          }
+        ]
+      }
+    },
+    {
+      "id": "3",
+      "title": "Customer Onboarding",
+      "target_companies_category": "Enterprise",
+      "is_scheduled": false,
+      "schedule_frequency": 3600,
+      "is_sandbox": "false",
+      "data": {
+        "stages": [
+          {
+            "id": 301,
+            "name": "Platform Setup",
+            "queries": [
+              "Has the account been created?",
+              "Have users been added?"
+            ],
+            "threshold": 0.5
+          },
+          {
+            "id": 302,
+            "name": "Training",
+            "queries": [
+              "Has initial training been completed?",
+              "Are additional sessions needed?"
+            ],
+            "threshold": 0.7
+          }
+        ]
+      }
+    },
+    {
+      "id": "4",
+      "title": "Renewal Process",
+      "target_companies_category": "Healthcare",
+      "is_scheduled": true,
+      "schedule_frequency": 2592000,
+      "is_sandbox": "false",
+      "data": {
+        "stages": [
+          {
+            "id": 401,
+            "name": "Satisfaction Check",
+            "queries": [
+              "Is the customer satisfied with the service?",
+              "Any outstanding issues?"
+            ],
+            "threshold": 0.8
+          },
+          {
+            "id": 402,
+            "name": "Upsell Opportunity",
+            "queries": [
+              "Are there additional modules they could benefit from?",
+              "Have we presented new features?"
+            ],
+            "threshold": 0.5
+          },
+          {
+            "id": 403,
+            "name": "Renewal Agreement",
+            "queries": [
+              "Has renewal paperwork been sent?",
+              "Has the renewal been confirmed?"
+            ],
+            "threshold": 0.9
+          }
+        ]
+      }
+    },
+    {
+      "id": "5",
+      "title": "Fortune_500",
+      "target_companies_category": "Fortune 500",
+      "is_scheduled": false,
+      "schedule_frequency": 86400,
+      "is_sandbox": "false",
+      "data": {
+        "stages": [
+          {
+            "id": 6307,
+            "name": "About indian office",
+            "queries": ["Is there any office in india?"],
+            "threshold": 0.5
+          }
+        ]
+      }
+    }
+  ]
+}
