@@ -1,6 +1,6 @@
 
 import axios from "axios";
-import { Workflow, WorkflowFormData, normalizeWorkflow, prepareWorkflowForSubmission } from "@/types/workflow";
+import { Workflow, WorkflowFormData, WorkflowRun, normalizeWorkflow, prepareWorkflowForSubmission } from "@/types/workflow";
 
 const API_URL = "http://127.0.0.1:8000/api/v1";
 
@@ -53,4 +53,14 @@ export const api = {
       throw error;
     }
   },
+
+  getWorkflowRuns: async (workflowId: number): Promise<WorkflowRun[]> => {
+    try {
+      const response = await axios.get(`${API_URL}/workflow_runs/workflow/${workflowId}`);
+      return response.data.workflow_runs || [];
+    } catch (error) {
+      console.error(`Error fetching workflow runs for workflow ${workflowId}:`, error);
+      throw error;
+    }
+  }
 };

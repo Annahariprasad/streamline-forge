@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import {
@@ -10,6 +11,7 @@ import {
   Calendar,
   LayoutGrid,
   Settings,
+  Activity,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -22,6 +24,7 @@ import {
   WorkflowFormData,
 } from "@/types/workflow";
 import { useWorkflows } from "@/hooks/useWorkflows";
+import { useWorkflowRuns } from "@/hooks/useWorkflowRuns";
 import { Badge } from "@/components/ui/badge";
 import EditWorkflowModal from "@/components/EditWorkflowModal";
 import {
@@ -32,11 +35,13 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import WorkflowRunsTable from "@/components/WorkflowRunsTable";
 
 const WorkflowDetails: React.FC = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { getWorkflow, updateWorkflow } = useWorkflows();
+  const { workflowRuns, loading: runsLoading, fetchWorkflowRuns } = useWorkflowRuns(id ? parseInt(id) : undefined);
   const [workflow, setWorkflow] = useState<Workflow | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
@@ -60,6 +65,12 @@ const WorkflowDetails: React.FC = () => {
 
     fetchWorkflowDetails();
   }, [id, getWorkflow]);
+
+  useEffect(() => {
+    if (id && !runsLoading) {
+      fetchWorkflowRuns();
+    }
+  }, [id, fetchWorkflowRuns, runsLoading]);
 
   const handleUpdateWorkflow = async (
     id: number,
@@ -261,6 +272,21 @@ const WorkflowDetails: React.FC = () => {
                   No stages have been defined for this workflow.
                 </div>
               )}
+            </CardContent>
+          </Card>
+
+          <Card className="overflow-hidden">
+            <CardHeader className="bg-secondary/30">
+              <CardTitle className="flex items-center">
+                <Activity className="h-5 w-5 mr-2 text-primary" />
+                Workflow Runs
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="p-6">
+              <WorkflowRunsTable 
+                workflowRuns={workflowRuns.filter(run => run.workflow_id === Number(id))} 
+                isLoading={runsLoading} 
+              />
             </CardContent>
           </Card>
         </div>

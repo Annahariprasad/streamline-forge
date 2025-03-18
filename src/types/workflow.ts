@@ -1,3 +1,4 @@
+
 export interface WorkflowStage {
   id: number;
   name: string;
@@ -33,6 +34,31 @@ export interface WorkflowFormData {
       threshold: number;
     }[];
   };
+}
+
+// Workflow Run interfaces
+export interface Company {
+  id: number;
+  name: string;
+}
+
+export interface WorkflowRunData {
+  total_companies: number;
+  processed_companies: number;
+  successful_companies: Company[];
+  unsuccessful_companies: Company[];
+  is_sandbox: boolean;
+}
+
+export interface WorkflowRun {
+  id: number;
+  workflow_id: number;
+  target_companies_category: string;
+  status: "Completed" | "Failed" | "In Progress";
+  is_active: boolean;
+  data: WorkflowRunData;
+  started_at: string;
+  completed_at: string | null;
 }
 
 // Convert string booleans to actual booleans
