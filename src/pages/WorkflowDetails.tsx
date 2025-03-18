@@ -1,25 +1,38 @@
+
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import {
   ArrowLeft,
-  Calendar,
   Edit,
-  LayoutGrid,
   AlertTriangle,
   Check,
   Clock,
-  Settings,
   Beaker,
+  Calendar,
+  LayoutGrid,
+  Settings,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Skeleton } from "@/components/ui/skeleton";
 import StatusBadge from "@/components/StatusBadge";
-import { Workflow, SCHEDULE_TYPE_REVERSE_MAP, WorkflowFormData } from "@/types/workflow";
+import { 
+  Workflow, 
+  SCHEDULE_TYPE_REVERSE_MAP, 
+  WorkflowFormData 
+} from "@/types/workflow";
 import { useWorkflows } from "@/hooks/useWorkflows";
 import { Badge } from "@/components/ui/badge";
 import EditWorkflowModal from "@/components/EditWorkflowModal";
+import { 
+  Table, 
+  TableBody, 
+  TableCell, 
+  TableHead, 
+  TableHeader, 
+  TableRow 
+} from "@/components/ui/table";
 
 const WorkflowDetails: React.FC = () => {
   const { id } = useParams();
@@ -151,77 +164,75 @@ const WorkflowDetails: React.FC = () => {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-            <Card className="overflow-hidden group hover:shadow-md transition-all duration-300">
-              <CardHeader className="bg-secondary/30 pb-3">
-                <CardTitle className="flex items-center text-sm font-medium text-muted-foreground">
-                  <Calendar className="h-4 w-4 mr-2 text-primary" />
-                  Schedule Type
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="pt-3">
-                <div className="text-lg font-semibold">
-                  {getScheduleTypeLabel(workflow.schedule_frequency)}
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card className="overflow-hidden group hover:shadow-md transition-all duration-300">
-              <CardHeader className="bg-secondary/30 pb-3">
-                <CardTitle className="flex items-center text-sm font-medium text-muted-foreground">
-                  <LayoutGrid className="h-4 w-4 mr-2 text-primary" />
-                  Total Stages
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="pt-3">
-                <div className="text-lg font-semibold">
-                  {workflow.data.stages.length} Stages
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card className="overflow-hidden group hover:shadow-md transition-all duration-300">
-              <CardHeader className="bg-secondary/30 pb-3">
-                <CardTitle className="flex items-center text-sm font-medium text-muted-foreground">
-                  <Settings className="h-4 w-4 mr-2 text-primary" />
-                  Status
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="pt-3">
-                <div className="text-lg font-semibold flex items-center">
-                  {workflow.is_scheduled ? (
-                    <>
-                      <Check className="h-5 w-5 mr-2 text-green-500" />
-                      Active
-                    </>
-                  ) : (
-                    <>
-                      <Clock className="h-5 w-5 mr-2 text-muted-foreground" />
-                      Inactive
-                    </>
-                  )}
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card className="overflow-hidden group hover:shadow-md transition-all duration-300">
-              <CardHeader className="bg-secondary/30 pb-3">
-                <CardTitle className="flex items-center text-sm font-medium text-muted-foreground">
-                  <Beaker className="h-4 w-4 mr-2 text-primary" />
-                  Environment
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="pt-3">
-                <div className="text-lg font-semibold flex items-center">
-                  {workflow.is_sandbox ? (
-                    <span className="text-amber-500">Sandbox</span>
-                  ) : (
-                    <span className="text-blue-500">Production</span>
-                  )}
-                </div>
-              </CardContent>
-            </Card>
-          </div>
+          <Card className="overflow-hidden">
+            <CardHeader className="bg-secondary/30">
+              <CardTitle>Workflow Summary</CardTitle>
+            </CardHeader>
+            <CardContent className="p-0">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead className="w-1/4">Property</TableHead>
+                    <TableHead>Value</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  <TableRow>
+                    <TableCell className="font-medium flex items-center">
+                      <Calendar className="h-4 w-4 mr-2 text-primary" />
+                      Schedule Type
+                    </TableCell>
+                    <TableCell>
+                      {getScheduleTypeLabel(workflow.schedule_frequency)}
+                    </TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell className="font-medium flex items-center">
+                      <LayoutGrid className="h-4 w-4 mr-2 text-primary" />
+                      Total Stages
+                    </TableCell>
+                    <TableCell>{workflow.data.stages.length} Stages</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell className="font-medium flex items-center">
+                      <Settings className="h-4 w-4 mr-2 text-primary" />
+                      Status
+                    </TableCell>
+                    <TableCell>
+                      <div className="flex items-center">
+                        {workflow.is_scheduled ? (
+                          <>
+                            <Check className="h-5 w-5 mr-2 text-green-500" />
+                            Active
+                          </>
+                        ) : (
+                          <>
+                            <Clock className="h-5 w-5 mr-2 text-muted-foreground" />
+                            Inactive
+                          </>
+                        )}
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell className="font-medium flex items-center">
+                      <Beaker className="h-4 w-4 mr-2 text-primary" />
+                      Environment
+                    </TableCell>
+                    <TableCell>
+                      <div className="flex items-center">
+                        {workflow.is_sandbox ? (
+                          <span className="text-amber-500">Sandbox</span>
+                        ) : (
+                          <span className="text-blue-500">Production</span>
+                        )}
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                </TableBody>
+              </Table>
+            </CardContent>
+          </Card>
 
           <Card className="overflow-hidden">
             <CardHeader className="bg-secondary/30">
