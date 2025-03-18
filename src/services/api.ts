@@ -1,7 +1,7 @@
 import axios from "axios";
 import { Workflow, WorkflowFormData } from "@/types/workflow";
 
-const API_URL = "https://zetanetra.z-apps.io/api/v1";
+const API_URL = " http://127.0.0.1:8000/api/v1";
 
 export const api = {
   getWorkflows: async (): Promise<Workflow[]> => {
