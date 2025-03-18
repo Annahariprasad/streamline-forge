@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import {
@@ -17,21 +16,21 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Skeleton } from "@/components/ui/skeleton";
 import StatusBadge from "@/components/StatusBadge";
-import { 
-  Workflow, 
-  SCHEDULE_TYPE_REVERSE_MAP, 
-  WorkflowFormData 
+import {
+  Workflow,
+  SCHEDULE_TYPE_REVERSE_MAP,
+  WorkflowFormData,
 } from "@/types/workflow";
 import { useWorkflows } from "@/hooks/useWorkflows";
 import { Badge } from "@/components/ui/badge";
 import EditWorkflowModal from "@/components/EditWorkflowModal";
-import { 
-  Table, 
-  TableBody, 
-  TableCell, 
-  TableHead, 
-  TableHeader, 
-  TableRow 
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
 } from "@/components/ui/table";
 
 const WorkflowDetails: React.FC = () => {
@@ -62,10 +61,13 @@ const WorkflowDetails: React.FC = () => {
     fetchWorkflowDetails();
   }, [id, getWorkflow]);
 
-  const handleUpdateWorkflow = async (id: number, data: Partial<WorkflowFormData>) => {
+  const handleUpdateWorkflow = async (
+    id: number,
+    data: Partial<WorkflowFormData>
+  ) => {
     await updateWorkflow(id, data);
     if (workflow) {
-      setWorkflow(prev => {
+      setWorkflow((prev) => {
         if (!prev) return null;
         return {
           ...prev,
@@ -210,21 +212,6 @@ const WorkflowDetails: React.FC = () => {
                             <Clock className="h-5 w-5 mr-2 text-muted-foreground" />
                             Inactive
                           </>
-                        )}
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell className="font-medium flex items-center">
-                      <Beaker className="h-4 w-4 mr-2 text-primary" />
-                      Environment
-                    </TableCell>
-                    <TableCell>
-                      <div className="flex items-center">
-                        {workflow.is_sandbox ? (
-                          <span className="text-amber-500">Sandbox</span>
-                        ) : (
-                          <span className="text-blue-500">Production</span>
                         )}
                       </div>
                     </TableCell>

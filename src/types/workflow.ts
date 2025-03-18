@@ -1,4 +1,3 @@
-
 export interface WorkflowStage {
   id: number;
   name: string;
@@ -37,19 +36,24 @@ export interface WorkflowFormData {
 }
 
 // Convert string booleans to actual booleans
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const normalizeWorkflow = (workflow: any): Workflow => {
   return {
     ...workflow,
-    is_scheduled: typeof workflow.is_scheduled === 'string' 
-      ? workflow.is_scheduled === 'true' 
-      : !!workflow.is_scheduled,
-    is_sandbox: typeof workflow.is_sandbox === 'string' 
-      ? workflow.is_sandbox === 'true' 
-      : !!workflow.is_sandbox,
+    is_scheduled:
+      typeof workflow.is_scheduled === "string"
+        ? workflow.is_scheduled === "true"
+        : !!workflow.is_scheduled,
+    is_sandbox:
+      typeof workflow.is_sandbox === "string"
+        ? workflow.is_sandbox === "true"
+        : !!workflow.is_sandbox,
   };
 };
 
-export const prepareWorkflowForSubmission = (workflow: Partial<WorkflowFormData>): Partial<WorkflowFormData> => {
+export const prepareWorkflowForSubmission = (
+  workflow: Partial<WorkflowFormData>
+): Partial<WorkflowFormData> => {
   return {
     ...workflow,
     is_scheduled: !!workflow.is_scheduled,
