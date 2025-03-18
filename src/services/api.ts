@@ -1,23 +1,27 @@
-import axios from "axios";
-import { Workflow, WorkflowFormData } from "@/types/workflow";
 
-const API_URL = " http://127.0.0.1:8000/api/v1";
+import axios from "axios";
+import { Workflow, WorkflowFormData, normalizeWorkflow, prepareWorkflowForSubmission } from "@/types/workflow";
+
+const API_URL = "http://127.0.0.1:8000/api/v1";
 
 export const api = {
   getWorkflows: async (): Promise<Workflow[]> => {
     const response = await axios.get(`${API_URL}/workflows`);
-    return response.data.workflows;
+    return response.data.workflows.map(normalizeWorkflow);
   },
 
   getWorkflow: async (id: number): Promise<Workflow> => {
     const response = await axios.get(`${API_URL}/workflows/${id}`);
-    return response.data;
+    return normalizeWorkflow(response.data);
   },
 
   createWorkflow: async (workflowData: WorkflowFormData): Promise<Workflow> => {
     try {
-      const response = await axios.post(`${API_URL}/workflows`, workflowData);
-      return response.data;
+      const response = await axios.post(
+        `${API_URL}/workflows`, 
+        prepareWorkflowForSubmission(workflowData)
+      );
+      return normalizeWorkflow(response.data);
     } catch (error) {
       console.error("Error creating workflow:", error);
       throw error;
@@ -31,9 +35,9 @@ export const api = {
     try {
       const response = await axios.patch(
         `${API_URL}/workflows/${id}`,
-        workflowData
+        prepareWorkflowForSubmission(workflowData)
       );
-      return response.data;
+      return normalizeWorkflow(response.data);
     } catch (error) {
       console.error(`Error updating workflow with id ${id}:`, error);
       throw error;

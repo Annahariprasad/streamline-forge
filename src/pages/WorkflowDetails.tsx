@@ -9,13 +9,14 @@ import {
   Check,
   Clock,
   Settings,
+  Beaker,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Skeleton } from "@/components/ui/skeleton";
 import StatusBadge from "@/components/StatusBadge";
-import { Workflow, SCHEDULE_TYPE_REVERSE_MAP } from "@/types/workflow";
+import { Workflow, SCHEDULE_TYPE_REVERSE_MAP, WorkflowFormData } from "@/types/workflow";
 import { useWorkflows } from "@/hooks/useWorkflows";
 import { Badge } from "@/components/ui/badge";
 import EditWorkflowModal from "@/components/EditWorkflowModal";
@@ -48,9 +49,18 @@ const WorkflowDetails: React.FC = () => {
     fetchWorkflowDetails();
   }, [id, getWorkflow]);
 
-  const handleUpdateWorkflow = async (id: number, data: Workflow) => {
+  const handleUpdateWorkflow = async (id: number, data: Partial<WorkflowFormData>) => {
     await updateWorkflow(id, data);
-    setWorkflow((prev) => (prev ? { ...prev, ...data } : null));
+    if (workflow) {
+      setWorkflow(prev => {
+        if (!prev) return null;
+        return {
+          ...prev,
+          ...data,
+          id: prev.id,
+        } as Workflow;
+      });
+    }
     setIsEditModalOpen(false);
   };
 
@@ -141,7 +151,7 @@ const WorkflowDetails: React.FC = () => {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
             <Card className="overflow-hidden group hover:shadow-md transition-all duration-300">
               <CardHeader className="bg-secondary/30 pb-3">
                 <CardTitle className="flex items-center text-sm font-medium text-muted-foreground">
@@ -189,6 +199,24 @@ const WorkflowDetails: React.FC = () => {
                       <Clock className="h-5 w-5 mr-2 text-muted-foreground" />
                       Inactive
                     </>
+                  )}
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="overflow-hidden group hover:shadow-md transition-all duration-300">
+              <CardHeader className="bg-secondary/30 pb-3">
+                <CardTitle className="flex items-center text-sm font-medium text-muted-foreground">
+                  <Beaker className="h-4 w-4 mr-2 text-primary" />
+                  Environment
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="pt-3">
+                <div className="text-lg font-semibold flex items-center">
+                  {workflow.is_sandbox ? (
+                    <span className="text-amber-500">Sandbox</span>
+                  ) : (
+                    <span className="text-blue-500">Production</span>
                   )}
                 </div>
               </CardContent>

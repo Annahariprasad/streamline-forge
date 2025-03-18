@@ -1,6 +1,6 @@
 
 import { useState, useEffect, useCallback } from 'react';
-import { Workflow, WorkflowFormData } from '@/types/workflow';
+import { Workflow, WorkflowFormData, normalizeWorkflow } from '@/types/workflow';
 import { api } from '@/services/api';
 import { useToast } from '@/components/ui/use-toast';
 

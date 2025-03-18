@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import {
   Dialog,
@@ -50,12 +49,12 @@ const EditWorkflowModal: React.FC<EditWorkflowModalProps> = ({
     target_companies_category: '',
     is_scheduled: false,
     schedule_frequency: SCHEDULE_TYPE_MAP.Daily,
+    is_sandbox: false,
     data: {
       stages: [],
     },
   });
 
-  // Load workflow data when the workflow prop changes
   useEffect(() => {
     if (workflow) {
       setFormData({
@@ -63,6 +62,7 @@ const EditWorkflowModal: React.FC<EditWorkflowModalProps> = ({
         target_companies_category: workflow.target_companies_category,
         is_scheduled: workflow.is_scheduled,
         schedule_frequency: workflow.schedule_frequency,
+        is_sandbox: workflow.is_sandbox,
         data: {
           stages: workflow.data.stages.map(stage => ({
             id: stage.id,
@@ -113,7 +113,6 @@ const EditWorkflowModal: React.FC<EditWorkflowModalProps> = ({
     
     if (!workflow) return;
     
-    // Validate form data
     if (!formData.title) {
       alert('Please enter a workflow name');
       return;
@@ -129,7 +128,6 @@ const EditWorkflowModal: React.FC<EditWorkflowModalProps> = ({
       return;
     }
     
-    // Validate stages
     for (const stage of formData.data.stages) {
       if (!stage.name) {
         alert('Please enter a name for all stages');
@@ -151,8 +149,7 @@ const EditWorkflowModal: React.FC<EditWorkflowModalProps> = ({
     
     try {
       setIsSubmitting(true);
-      // Ensure all stages have IDs
-      const formattedData = {
+      const formattedData: Partial<WorkflowFormData> = {
         ...formData,
         data: {
           stages: formData.data.stages.map((stage) => ({
@@ -171,7 +168,6 @@ const EditWorkflowModal: React.FC<EditWorkflowModalProps> = ({
     }
   };
 
-  // Determine current schedule type from frequency
   const getCurrentScheduleType = () => {
     return SCHEDULE_TYPE_REVERSE_MAP[formData.schedule_frequency] || 'Daily';
   };
@@ -254,6 +250,17 @@ const EditWorkflowModal: React.FC<EditWorkflowModalProps> = ({
                   {formData.is_scheduled ? 'Active' : 'Inactive'}
                 </Label>
               </div>
+            </div>
+
+            <div className="flex items-center space-x-2 h-full">
+              <Switch
+                id="edit-is_sandbox"
+                checked={formData.is_sandbox}
+                onCheckedChange={(checked) => handleSwitchChange('is_sandbox', checked)}
+              />
+              <Label htmlFor="edit-is_sandbox" className="text-sm font-medium cursor-pointer">
+                {formData.is_sandbox ? 'Sandbox Mode' : 'Production Mode'}
+              </Label>
             </div>
 
             <div className="space-y-2">
